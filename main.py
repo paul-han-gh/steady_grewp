@@ -5,8 +5,8 @@ def main():
     env = jinja.Environment(
         loader=jinja.FileSystemLoader("templates")
     )
-    template = env.get_template('header.html')
-    print(template.render())
+    template = env.get_template('article.html')
+    print(template.render(article_name='article_name'))
 
 
 if __name__ == "__main__":
