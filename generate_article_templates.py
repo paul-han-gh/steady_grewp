@@ -3,6 +3,27 @@ import os
 import mistune
 
 
+class TailwindRenderer(mistune.HTMLRenderer):
+    def heading(self, text: str, level: int, **attrs):
+        classes = ['font-bold']
+
+        if level == 1:
+            classes += ['text-4xl', 'my-6']
+        elif level == 2:
+            classes += ['text-3xl', 'my-5']
+        elif level == 3:
+            classes += ['text-2xl', 'my-4']
+        elif level == 4:
+            classes += ['text-xl', 'my-3']
+        elif level == 5:
+            classes += ['text-lg', 'my-2']
+        else:  # level 6 and any others
+            classes += ['text-base', 'my-2']
+
+        class_str = ' '.join(classes)
+        return f'<h{level} class="{class_str}">{text}<h{level}>'
+
+
 def iterate_files_in_subdir(subdir_path):
     """
     Iterates through all files in a specified subdirectory using the os module.
@@ -30,7 +51,8 @@ def convert_md_to_html(md_file_path: str) -> None:
         open(md_file_path, 'r') as md_file,
         open(f'templates/{filename_without_ext}.html', 'w') as html_file
     ):
-        html = mistune.html(md_file.read())
+        markdown = mistune.create_markdown(renderer=TailwindRenderer())
+        html = markdown(md_file.read())
         html_file.write(html) # type: ignore
                               # `mistune.html` should only return a str type, but Pylance adds an extra type for List[Dict[str, Any]]
 
