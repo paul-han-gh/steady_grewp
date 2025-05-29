@@ -11,3 +11,7 @@ wheels/
 
 # Custom workspace settings
 .vscode/
+
+# Chalice files
+.chalice/deployments/
+.chalice/venv/
