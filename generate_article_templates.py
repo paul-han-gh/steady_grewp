@@ -4,8 +4,8 @@ import mistune
 
 
 class TailwindRenderer(mistune.HTMLRenderer):
-    def heading(self, text: str, level: int, **attrs):
-        classes = ['font-bold']
+    def heading(self, text: str, level: int, **attrs) -> str:
+        classes = ['font-bold', 'font-sans']
 
         if level == 1:
             classes += ['text-4xl', 'my-6', 'text-center', 'text-balance']
@@ -22,6 +22,10 @@ class TailwindRenderer(mistune.HTMLRenderer):
 
         class_str = ' '.join(classes)
         return f'<h{level} class="{class_str}">{text}<h{level}>\n'
+    
+    def paragraph(self, text: str) -> str:
+        class_str = 'font-sans tracking-tight text-slate-900'
+        return f'<p class="{class_str}">{text}</p>'
 
 
 def iterate_files_in_subdir(subdir_path):
