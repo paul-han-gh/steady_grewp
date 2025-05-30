@@ -8,7 +8,7 @@ class TailwindRenderer(mistune.HTMLRenderer):
         classes = ['font-bold']
 
         if level == 1:
-            classes += ['text-4xl', 'my-6']
+            classes += ['text-4xl', 'my-6', 'text-center', 'text-balance']
         elif level == 2:
             classes += ['text-3xl', 'my-5']
         elif level == 3:
@@ -21,7 +21,7 @@ class TailwindRenderer(mistune.HTMLRenderer):
             classes += ['text-base', 'my-2']
 
         class_str = ' '.join(classes)
-        return f'<h{level} class="{class_str}">{text}<h{level}>'
+        return f'<h{level} class="{class_str}">{text}<h{level}>\n'
 
 
 def iterate_files_in_subdir(subdir_path):
