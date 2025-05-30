@@ -7,15 +7,21 @@ class TailwindRenderer(mistune.HTMLRenderer):
     def heading(self, text: str, level: int, **attrs) -> str:
         margin_bottom = max(3, 6 - level)
         margin_top = 2 * margin_bottom
-        classes = [
-            'font-bold',
-            'font-sans',
-            f'mt-{margin_top}',
-            f'mb-{margin_bottom}'
-        ]
+        classes = (
+            [
+                'font-bold',
+                'font-sans',
+                f'mt-{margin_top}',
+                f'mb-{margin_bottom}'
+            ]
+            if level > 1
+            else [
+                'font-bold', 'font-sans'
+            ]
+        )
 
         if level == 1:
-            classes += ['text-4xl', 'text-center', 'text-balance']
+            classes += ['text-4xl', 'text-center', 'text-balance', 'my-10']
         elif level == 2:
             classes += ['text-3xl']
         elif level == 3:
