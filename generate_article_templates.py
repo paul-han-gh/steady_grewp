@@ -15,17 +15,17 @@ class TailwindRenderer(mistune.HTMLRenderer):
         ]
 
         if level == 1:
-            classes += ['text-4xl', 'my-6', 'text-center', 'text-balance']
+            classes += ['text-4xl', 'text-center', 'text-balance']
         elif level == 2:
-            classes += ['text-3xl', 'my-5']
+            classes += ['text-3xl']
         elif level == 3:
-            classes += ['text-2xl', 'my-4']
+            classes += ['text-2xl']
         elif level == 4:
-            classes += ['text-xl', 'my-3']
+            classes += ['text-xl']
         elif level == 5:
-            classes += ['text-lg', 'my-2']
+            classes += ['text-lg']
         else:  # level 6 and any others
-            classes += ['text-base', 'my-2']
+            classes += ['text-base']
 
         class_str = ' '.join(classes)
         return f'<h{level} class="{class_str}">{text}<h{level}>'
