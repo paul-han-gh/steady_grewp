@@ -28,11 +28,15 @@ class TailwindRenderer(mistune.HTMLRenderer):
             classes += ['text-base', 'my-2']
 
         class_str = ' '.join(classes)
-        return f'<h{level} class="{class_str}">{text}<h{level}>\n'
+        return f'<h{level} class="{class_str}">{text}<h{level}>'
     
     def paragraph(self, text: str) -> str:
         class_str = 'font-sans tracking-tight text-slate-900 mb-2'
         return f'<p class="{class_str}">{text}</p>'
+    
+    def block_quote(self, text: str) -> str:
+        class_str = 'border-l-4 pl-4'
+        return f'<blockquote class="{class_str}">{text}</blockquote>'
 
 
 def iterate_files_in_subdir(subdir_path):

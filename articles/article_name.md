@@ -13,4 +13,4 @@ My conjecture is that dbt itself coined and popularized the term "transformation
 
 Taking cues from principles that were being applied to software engineering, the developers of dbt thought that a modern data stack would be better served if monolithic ETL tools were split into microservices; the "T" is its chosen niche. In that sense, it goes without saying that transformation is the primary scope of dbt's concern within the data stack. 
 
-This paradigm shift proved to be a huge value add, and now, dbt-like offerings are rearing their heads in other places (e.g. Dataform, Coalesce, SQLMesh). 
+This paradigm shift proved to be a huge value add, and now, dbt-like offerings are rearing their heads in troves (e.g. Dataform, Coalesce, SQLMesh). 
