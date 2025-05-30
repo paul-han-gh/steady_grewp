@@ -5,7 +5,14 @@ import mistune
 
 class TailwindRenderer(mistune.HTMLRenderer):
     def heading(self, text: str, level: int, **attrs) -> str:
-        classes = ['font-bold', 'font-sans']
+        margin_bottom = max(3, 6 - level)
+        margin_top = 2 * margin_bottom
+        classes = [
+            'font-bold',
+            'font-sans',
+            f'mt-{margin_top}',
+            f'mb-{margin_bottom}'
+        ]
 
         if level == 1:
             classes += ['text-4xl', 'my-6', 'text-center', 'text-balance']
@@ -24,7 +31,7 @@ class TailwindRenderer(mistune.HTMLRenderer):
         return f'<h{level} class="{class_str}">{text}<h{level}>\n'
     
     def paragraph(self, text: str) -> str:
-        class_str = 'font-sans tracking-tight text-slate-900'
+        class_str = 'font-sans tracking-tight text-slate-900 mb-2'
         return f'<p class="{class_str}">{text}</p>'
 
 
