@@ -1,5 +1,7 @@
 # Lean Data Stack: dbt May Not Be Necessary with Dagster
 
+.. toc::
+
 A colleague and I recently discussed what at first seemed like a question with an obvious answer:
 
 > What **kind** of software is dbt in your data stack?

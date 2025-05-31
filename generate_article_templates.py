@@ -1,6 +1,11 @@
 import os
+import re
+
+from typing import Any
+from collections.abc import Iterable
 
 import mistune
+from mistune.directives import RSTDirective, TableOfContents
 
 
 class TailwindRenderer(mistune.HTMLRenderer):
@@ -45,6 +50,80 @@ class TailwindRenderer(mistune.HTMLRenderer):
         return f'<blockquote class="{class_str}">{text}</blockquote>'
 
 
+def render_toc_ul(toc: Iterable[tuple[int, str, str]]) -> str:
+    if not toc:
+        return ""
+
+    s = ""
+    levels = []
+    for level, k, text in toc:
+        item = '<a href="#{}">{}</a>'.format(k, text)
+        if not levels:
+            s += "<li>" + item
+            levels.append(level)
+        elif level == levels[-1]:
+            s += "</li>\n<li>" + item
+        elif level > levels[-1]:
+            s += "\n<ul>\n<li>" + item
+            levels.append(level)
+        else:
+            levels.pop()
+            while levels:
+                last_level = levels.pop()
+                if level == last_level:
+                    s += "</li>\n</ul>\n</li>\n<li>" + item
+                    levels.append(level)
+                    break
+                elif level > last_level:
+                    s += "</li>\n<li>" + item
+                    levels.append(last_level)
+                    levels.append(level)
+                    break
+                else:
+                    s += "</li>\n</ul>\n"
+            else:
+                levels.append(level)
+                s += "</li>\n<li>" + item
+
+    while len(levels) > 1:
+        s += "</li>\n</ul>\n"
+        levels.pop()
+
+    if not s:
+        return ""
+    return "<ul>\n" + s + "</li>\n</ul>\n"
+
+
+def render_html_toc(renderer, title: str, collapse: bool = False, **attrs: Any) -> str:
+    if not title:
+        title = "Table of Contents"
+    content = render_toc_ul(attrs["toc"])
+
+    html = '<details class="toc"'
+    if not collapse:
+        html += " open"
+    html += ">\n<summary>" + title + "</summary>\n"
+    return html + content + "</details>\n"
+
+
+class CustomTOC(TableOfContents):
+    def generate_heading_id(self, token: dict[str, Any], index: int) -> str:
+        heading_text = str(token.get('text'))
+        heading_text_normalized = re.sub(
+            r'[^a-z0-9]+',
+            '-',
+            heading_text.lower()
+        ).strip('-')
+        return heading_text_normalized
+    
+    def __call__(self, directive, md) -> None:
+        if md.renderer and md.renderer.NAME == "html":
+            # only works with HTML renderer
+            directive.register("toc", self.parse)
+            md.before_render_hooks.append(self.toc_hook)
+            md.renderer.register("toc", render_html_toc)
+
+
 def iterate_files_in_subdir(subdir_path):
     """
     Iterates through all files in a specified subdirectory using the os module.
@@ -72,7 +151,10 @@ def convert_md_to_html(md_file_path: str) -> None:
         open(md_file_path, 'r') as md_file,
         open(f'templates/{filename_without_ext}.html', 'w') as html_file
     ):
-        markdown = mistune.create_markdown(renderer=TailwindRenderer())
+        markdown = mistune.create_markdown(
+            renderer=TailwindRenderer(),
+            plugins=[RSTDirective([CustomTOC(min_level=2)])] # type: ignore
+        )
         html = markdown(md_file.read())
         html_file.write(html) # type: ignore
                               # `mistune.html` should only return a str type, but Pylance adds an extra type for List[Dict[str, Any]]
