@@ -1,5 +1,4 @@
 import os
-import base64
 
 import jinja2 as jinja
 
