@@ -1,25 +1,2 @@
 # Ignore Python virtual environment
 .venv
-venv
-ENV
-
-# Ignore Python cache and compiled files
-__pycache__
-*.pyc
-*.pyo
-*.pyd
-
-# Ignore Git directory
-.git
-.gitignore
-
-# Ignore VS Code specific files
-.vscode
-
-# Ignore other common files/folders you don't need in the image
-.DS_Store
-
-# Add any local-only build artifacts or logs
-build/
-dist/
-*.log

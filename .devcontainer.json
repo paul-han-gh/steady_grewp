@@ -1,13 +1,7 @@
 {
+    "name": "Chalice Web Application (uv, AWS CLI, NodeJS)",
     "build": {
         "dockerfile": "Dockerfile"
     },
-
-    "customizations": {
-        "vscode": {
-        "extensions": ["ms-python.python"]
-        }
-    },
-
-    "forwardPorts": [3000]
+    "forwardPorts": [8000]
 }
