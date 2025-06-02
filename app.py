@@ -1,3 +1,5 @@
+import os
+
 import jinja2 as jinja
 
 from chalice import Chalice, Response # type: ignore
@@ -19,3 +21,13 @@ def index():
         status_code=200,
         headers={'Content-Type': 'text/html'}
     )
+
+@app.route('/img/logo.png')
+def logo():
+    file_path = os.path.join(os.path.dirname(__file__), 'chalicelib', 'logo.png')
+    with open(file_path, 'rb') as logo_file:
+        return Response(
+            body=logo_file.read(),
+            status_code=200,
+            headers={'Content-Type': 'image/png'}
+        )

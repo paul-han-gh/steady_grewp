@@ -1,2 +1,16 @@
-# Article Name
-This is a article
+# Lean Data Stack: dbt May Not Be Necessary with Dagster
+.. toc::
+A colleague and I recently discussed what at first seemed like a question with an obvious answer:
+> What **kind** of software is dbt in your data stack?
+This colleague's answer was "a transformation tool" to which I rebutted "no, it's an orchestrator". What my research (albeit very shallow) revealed is that my colleague's answer is the widely accepted one. 
+Whether it's pride or a rigid pursuit for accuracy, I don't agree with the popular assessment of what the data engineering community dubs the role of dbt in a data stack. So, here's my case.
+## What even is "a transformation tool"?
+My conjecture is that dbt itself coined and popularized the term "transformation tool". Before dbt, ETL operations were done usually under a single platform that covered extraction, transformation and loading.
+Taking cues from principles that were being applied to software engineering, the developers of dbt thought that a modern data stack would be better served if monolithic ETL tools were split into microservices; the "T" is its chosen niche. In that sense, it goes without saying that transformation is the primary scope of dbt's concern within the data stack.
+This paradigm shift proved to be a huge value add, and now, dbt-like offerings are rearing their heads in troves (e.g. Dataform, Coalesce, SQLMesh).
+### Lorem Ipsum
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc finibus sed orci a iaculis. Nam ultrices lacinia mauris ut rhoncus. Nulla in dui neque. Mauris sit amet nunc in urna luctus accumsan quis sed lectus. Morbi vitae ipsum tempor, finibus felis eget, facilisis risus. Nulla elementum nisl ultrices, fermentum purus id, mollis elit. Vivamus lobortis suscipit ullamcorper. Phasellus vehicula sed ipsum non luctus.
+### Consectetur Adipiscing Elit
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis sit amet dignissim neque. Sed varius congue consequat. Proin imperdiet nisl et ligula commodo tincidunt et vel purus. Donec facilisis id arcu vitae convallis. Aenean nibh lorem, maximus ac egestas vitae, dapibus vitae arcu. Vestibulum rutrum pulvinar nisl, venenatis venenatis libero facilisis eget.
+## Dolor Sit Amet
+Fusce accumsan ipsum in fringilla lacinia. In hac habitasse platea dictumst. Vestibulum lacinia efficitur dictum. Morbi condimentum dolor vitae hendrerit sollicitudin. Integer accumsan, eros vel tincidunt fringilla, elit ligula auctor turpis, ut dapibus sapien erat nec ligula. Nunc vestibulum nisi a quam eleifend dapibus. Nunc et dictum urna. Etiam tempor vitae ligula in bibendum. Pellentesque convallis metus ante, in condimentum sapien pharetra quis. Fusce pharetra semper sapien vitae fringilla. Duis quis euismod arcu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse potenti. Nullam magna elit, laoreet sit amet dolor id, mattis tristique quam. Fusce ut purus mollis, pellentesque mi accumsan, pulvinar libero. In ut ornare nunc.
