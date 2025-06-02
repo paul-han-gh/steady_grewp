@@ -56,42 +56,51 @@ def render_toc_ul(toc: Iterable[tuple[int, str, str]]) -> str:
 
     s = ""
     levels = []
-    for level, k, text in toc:
-        item = '<a href="#{}">{}</a>'.format(k, text)
+    for level, heading_id, text in toc:
+        item = (
+            (
+                '<p class="line-clamp-2 mb-2">'
+                if level == 2
+                else f'<p class="line-clamp-2 mb-2 pl-{(level-2)*3}">'
+            )
+            + f'<a href="#{heading_id}"'
+            + 'class="text-slate-900 font-light text-sm/5">'
+            + f'{text}</a></p>'
+        )
         if not levels:
-            s += "<li>" + item
+            s += '<li>' + item
             levels.append(level)
         elif level == levels[-1]:
-            s += "</li>\n<li>" + item
+            s += '</li><li>' + item
         elif level > levels[-1]:
-            s += "\n<ul>\n<li>" + item
+            s += '<ul><li>' + item
             levels.append(level)
         else:
             levels.pop()
             while levels:
                 last_level = levels.pop()
                 if level == last_level:
-                    s += "</li>\n</ul>\n</li>\n<li>" + item
+                    s += '</li></ul></li><li>' + item
                     levels.append(level)
                     break
                 elif level > last_level:
-                    s += "</li>\n<li>" + item
+                    s += '</li><li>' + item
                     levels.append(last_level)
                     levels.append(level)
                     break
                 else:
-                    s += "</li>\n</ul>\n"
+                    s += '</li></ul>'
             else:
                 levels.append(level)
                 s += "</li>\n<li>" + item
 
     while len(levels) > 1:
-        s += "</li>\n</ul>\n"
+        s += "</li></ul>"
         levels.pop()
 
     if not s:
         return ""
-    return "<ul>\n" + s + "</li>\n</ul>\n"
+    return "<ul>\n" + s + "</li></ul>"
 
 
 def render_html_toc(renderer, title: str, collapse: bool = False, **attrs: Any) -> str:
@@ -99,11 +108,13 @@ def render_html_toc(renderer, title: str, collapse: bool = False, **attrs: Any) 
         title = "Table of Contents"
     content = render_toc_ul(attrs["toc"])
 
-    html = '<details class="toc"'
-    if not collapse:
-        html += " open"
-    html += ">\n<summary>" + title + "</summary>\n"
-    return html + content + "</details>\n"
+    html = (
+        '<p class="font-bold text-lg text-slate-900 mb-2 truncate">'
+        f'{title}'
+        "</p>"
+        f'{content}'
+    )
+    return f'{html}::truncate_point"'
 
 
 class CustomTOC(TableOfContents):
@@ -153,11 +164,27 @@ def convert_md_to_html(md_file_path: str) -> None:
     ):
         markdown = mistune.create_markdown(
             renderer=TailwindRenderer(),
-            plugins=[RSTDirective([CustomTOC(min_level=2)])] # type: ignore
+            plugins=[RSTDirective([CustomTOC(min_level=2, max_level=4)])] # type: ignore
         )
-        html = markdown(md_file.read())
-        html_file.write(html) # type: ignore
-                              # `mistune.html` should only return a str type, but Pylance adds an extra type for List[Dict[str, Any]]
+        md_lines = md_file.readlines()
+        html = ''
+        html += str(markdown(md_lines[0]))
+        html += (
+            '<section class="flex">'
+            '<div class="w-2/10">'
+            '<nav class="sticky top-50">'
+        )
+        html += str(markdown('\n'.join(md_lines[1:])))
+        truncate_point = html.find('::truncate_point')
+        html = html[:truncate_point]
+        html += (
+            '</nav>'
+            '</div>'
+            '<div class="w-8/10 pl-5">'
+        )
+        html += str(markdown('\n'.join(md_lines[2:])))
+        html += '</div></section>'
+        html_file.write(html)
 
 
 iterate_files_in_subdir('articles')
